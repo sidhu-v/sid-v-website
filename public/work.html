@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Work — Sidharth</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>/* small override for carousel */
+  .carousel{position:relative;overflow:hidden;border-radius:18px}
+  .carousel-track{display:flex;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
+  .carousel-slide{min-width:100%;box-sizing:border-box}
+  .carousel-controls{display:flex;gap:8px;justify-content:center;margin-top:12px}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">Sidharth V.</div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/achievements.html">Achievements</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="card">
+      <h2>Project carousel</h2>
+      <div class="carousel" id="project-carousel">
+        <div class="carousel-track" id="carousel-track"></div>
+      </div>
+      <div class="carousel-controls" id="carousel-controls"></div>
+    </section>
+
+    <section class="card">
+      <h2>All projects</h2>
+      <div id="project-grid" class="project-grid"></div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container">Back to <a href="/">home</a></div></footer>
+  <script src="/app.js"></script>
+</body>
+</html>

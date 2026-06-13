@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Sidharth</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">Sidharth V.</div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/work.html">Work</a>
+        <a href="/achievements.html">Achievements</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="card contact-section">
+      <div>
+        <h2>Contact zone</h2>
+        <p class="muted">Choose an option to reach out — or use the form to send a message directly.</p>
+        <div id="contact-info" class="contact-grid"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn" href="mailto:hello@sidharth.dev">Email</a>
+          <a class="btn" href="https://wa.me/919876543210">WhatsApp</a>
+          <a class="btn" href="https://linkedin.com" target="_blank">LinkedIn</a>
+          <a class="btn" href="https://calendly.com" target="_blank">Schedule</a>
+        </div>
+      </div>
+      <form id="contact-form" class="contact-form">
+        <label> Your name <input name="name" required /></label>
+        <label> Your email <input name="email" type="email" required /></label>
+        <label> Subject <input name="subject" /></label>
+        <label> Message <textarea name="message" rows="6" required></textarea></label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn btn-primary" type="submit">Send message</button>
+          <div id="contact-status" class="muted"></div>
+        </div>
+      </form>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container">Back to <a href="/">home</a></div></footer>
+  <script src="/app.js"></script>
+</body>
+</html>

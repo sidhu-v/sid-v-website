@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Personal Portfolio — Sidharth</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="logo">Sidharth V.</div>
+        <div class="top-controls">
+          <button id="theme-toggle" class="btn btn-icon">🌙</button>
+          <nav class="nav-links">
+            <a href="#about">About</a>
+            <a href="#work">Work</a>
+            <a href="#achievements">Achievements</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="about" class="hero card hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Story-driven web experiences</span>
+          <h1 id="name">Loading name…</h1>
+          <p id="title">Loading title…</p>
+          <p id="bio">Loading bio…</p>
+          <div class="hero-actions">
+            <button id="btn-moments" class="btn btn-primary">Story moments</button>
+            <button id="btn-milestones" class="btn btn-secondary">Milestone view</button>
+          </div>
+          <div class="hero-marquee" id="hero-marquee">Loading highlights...</div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="hero-image-card">
+            <img id="hero-avatar" src="" alt="Profile image" />
+            <div class="hero-image-caption">Beyond code: creativity, impact, and a few stories.</div>
+          </div>
+          <div class="stat-grid" id="stat-grid"></div>
+        </div>
+      </section>
+
+      <section id="work" class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Featured work</h2>
+            <p>High-energy projects with visuals, categories, and image previews.</p>
+          </div>
+          <div class="filter-row">
+            <div class="search-wrapper">
+              <input id="search" placeholder="Search by project, skill, or achievement" />
+            </div>
+            <div id="project-filters" class="filter-pill-row"></div>
+          </div>
+        </div>
+        <div id="project-grid" class="project-grid"></div>
+      </section>
+
+      <section id="achievements" class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Achievements</h2>
+            <p>Medals, awards, high school memories, and technical milestones.</p>
+          </div>
+          <div class="section-summary" id="achievement-summary"></div>
+        </div>
+        <div class="badge-row" id="badge-row"></div>
+        <div id="dynamic" class="grid grid-3"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Timeline</h2>
+            <p>Separated into high school, college, and professional chapters.</p>
+          </div>
+          <div class="section-summary">Swipe through what mattered most.</div>
+        </div>
+        <div id="timeline-list" class="timeline-list"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Skill radar</h2>
+            <p>Showcase strengths with progress bars, tags, and an image panel.</p>
+          </div>
+          <div class="skill-meta">Dynamic creative and engineering skillset.</div>
+        </div>
+        <div class="skill-grid">
+          <div id="skill-list" class="skill-list"></div>
+          <div class="skill-image-area">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80" alt="Creative workspace" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <h2>Testimonials</h2>
+        <div id="testimonial-grid" class="testimonial-grid"></div>
+      </section>
+
+      <section id="gallery" class="card section-card gallery-section">
+        <div class="section-head">
+          <div>
+            <h2>Image gallery</h2>
+            <p>Visual storytelling through projects, events, and milestones.</p>
+          </div>
+        </div>
+        <div id="image-gallery" class="gallery-grid"></div>
+      </section>
+
+      <section id="contact" class="card section-card contact-section">
+        <div>
+          <h2>Contact zone</h2>
+          <p>Let's connect about work, mentorship, or the next creative sprint.</p>
+          <div id="contact-info" class="contact-grid"></div>
+        </div>
+        <form class="contact-form" action="mailto:hello@sidharth.dev" method="get" enctype="text/plain">
+          <label>
+            Your email
+            <input type="email" placeholder="you@example.com" />
+          </label>
+          <label>
+            Message
+            <textarea rows="5" placeholder="Tell me about your idea or collaboration..."></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Email me</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container"><span id="footer-note">Loading footer note…</span></div>
+    </footer>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
