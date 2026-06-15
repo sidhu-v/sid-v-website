@@ -17,9 +17,9 @@ app.get('/api/data', (req, res) => {
     },
     stats: [
       { id: 1, label: 'Years coding', value: '5+', icon: '⏱' },
-      { id: 2, label: 'Projects launched', value: '35+', icon: '🚀' },
-      { id: 3, label: 'Talks delivered', value: '12', icon: '🎤' },
-      { id: 4, label: 'High school awards', value: '7', icon: '🏅' }
+      { id: 2, label: 'Projects launched', value: '17+', icon: '🚀' },
+      { id: 3, label: 'APs Taken', value: '12', icon: '📝' },
+      { id: 4, label: 'High school awards', value: '5', icon: '🏅' }
     ],
     moments: [
       { id: 1, title: 'Built a community dashboard', date: '2024-01-14', description: 'Created a live analytics dashboard for community health and engagement.' },
@@ -37,19 +37,19 @@ app.get('/api/data', (req, res) => {
       { id: 3, name: 'Hackathon MVP', level: 'Silver', info: 'Won best experience in a 48-hour innovation sprint.' }
     ],
     projects: [
-      { id: 1, title: 'Aurora Notes', category: 'FinTech', tagline: 'Secure note platform', summary: 'A sleek notes app for financial advisors with secure syncing and analytics.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1551446591-142875a901a1?auto=format&fit=crop&w=900&q=80', tags: ['React', 'Security', 'Analytics'] },
-      { id: 2, title: 'Pulse Studio', category: 'Creator Tools', tagline: 'Creator workflow', summary: 'A productivity toolkit for content creators with schedule automation.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80', tags: ['Design', 'Workflow', 'UI'] },
-      { id: 3, title: 'Campus Connect', category: 'Community', tagline: 'Student engagement', summary: 'A hub for university groups to discover events, share resources, and collaborate.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?auto=format&fit=crop&w=900&q=80', tags: ['Community', 'Events', 'Mobile'] }
+      { id: 1, title: 'Crisis Triage Simulator (Medical)', category: 'Medical', tagline: 'Emergency response', summary: 'A simulation tool for medical professionals to practice triage decisions.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80', tags: ['React', 'Medical', 'Simulation'] },
+      { id: 2, title: 'Innovate Education Website', category: 'EdTech', tagline: 'Learning platform', summary: 'An engaging platform for online courses with interactive content and progress tracking.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=900&q=80', tags: ['Vue', 'Education', 'Progress'] },
+      { id: 3, title: 'Music Production Thingy', category: 'Creative', tagline: 'Audio creation', summary: 'A tool for creating and editing music with a modern interface.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80', tags: ['Audio', 'Editing', 'Creative'] }
     ],
     skills: [
-      { id: 1, name: 'React', level: 92 },
-      { id: 2, name: 'TypeScript', level: 88 },
-      { id: 3, name: 'UI Design', level: 86 },
-      { id: 4, name: 'Product Strategy', level: 80 },
-      { id: 5, name: 'Data Visualization', level: 84 }
+      { id: 1, name: 'Java', level: 79},
+      { id: 2, name: 'JavaScript', level: 47},
+      { id: 3, name: 'Python', level: 53},
+      { id: 4, name: 'R', level: 31 },
+      { id: 5, name: 'HTML CSS', level: 39}
     ],
     timeline: [
-      { id: 1, stage: 'High School', when: 2016, title: 'Science fair winner', detail: 'Built a robotics project that won first place.', category: 'Academics' },
+      { id: 1, stage: 'High School', when: 2016, title: 'FBLA States ', detail: 'Built a robotics project that won first place.', category: 'Academics' },
       { id: 2, stage: 'High School', when: 2017, title: 'Debate team captain', detail: 'Led the team to the national finals.', category: 'Leadership' },
       { id: 3, stage: 'College', when: 2019, title: 'Internship at startup', detail: 'Built marketing dashboards and growth tools.', category: 'Internship' },
       { id: 4, stage: 'College', when: 2020, title: 'Designed campus app', detail: 'Created a student event app used by 1,500 students.', category: 'Product' },
@@ -57,8 +57,9 @@ app.get('/api/data', (req, res) => {
       { id: 6, stage: 'Career', when: 2024, title: 'Hosted global workshop', detail: 'Taught UX and product strategy to remote teams.', category: 'Speaking' }
     ],
     testimonials: [
-      { id: 1, name: 'Priya R.', role: 'Product Lead', quote: 'Sidharth turns ambitious ideas into polished, easy-to-use products with thoughtful execution.' },
-      { id: 2, name: 'Amit G.', role: 'Founder', quote: 'A reliable partner for scaling product design and engineering at speed.' }
+      { id: 1, name: 'Suresh Unc.', role: 'Intern Helper', quote: 'Sidharth turns ambitious ideas into polished, easy-to-use products with thoughtful execution.' },
+      { id: 2, name: 'NCHS Teacher.', role: 'Educator', quote: 'Sidharth is a great student and has a strong work ethic, making him a valuable asset to any team.' }
+       }
     ],
     gallery: [
       { id: 1, title: 'Workshop highlights', image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80' },
