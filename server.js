@@ -32,7 +32,7 @@ app.get('/api/data', (req, res) => {
       { id: 3, title: 'One million visits', year: 2024, detail: 'Surpassed 1M visitors across products and guides.' }
     ],
     medals: [
-      { id: 1, name: 'Open Source Champion', level: 'Gold', info: 'Trusted contributor to widely used libraries.' },
+      { id: 1, name: 'FBLA States Network Design', level: '9th Place', info : 'Designed a network for a school district system project that won 9th place at the state level.' },
       { id: 2, name: 'Design Sprint Leader', level: 'Platinum', info: 'Led rapid iteration cycles from concept to shipped product.' },
       { id: 3, name: 'Hackathon MVP', level: 'Silver', info: 'Won best experience in a 48-hour innovation sprint.' }
     ],
@@ -42,11 +42,11 @@ app.get('/api/data', (req, res) => {
       { id: 3, title: 'Music Production Thingy', category: 'Creative', tagline: 'Audio creation', summary: 'A tool for creating and editing music with a modern interface.', url: 'https://example.com', image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=900&q=80', tags: ['Audio', 'Editing', 'Creative'] }
     ],
     skills: [
-      { id: 1, name: 'Java', level: 79},
-      { id: 2, name: 'JavaScript', level: 47},
-      { id: 3, name: 'Python', level: 53},
-      { id: 4, name: 'R', level: 31 },
-      { id: 5, name: 'HTML CSS', level: 39}
+      { id: 1, name: 'Java', level: 89},
+      { id: 2, name: 'JavaScript', level: 57},
+      { id: 3, name: 'Python', level: 63},
+      { id: 4, name: 'R', level: 41 },
+      { id: 5, name: 'HTML CSS', level: 49}
     ],
     timeline: [
       { id: 1, stage: 'High School', when: 2016, title: 'FBLA States ', detail: 'Built a robotics project that won first place.', category: 'Academics' },
@@ -59,7 +59,6 @@ app.get('/api/data', (req, res) => {
     testimonials: [
       { id: 1, name: 'Suresh Unc.', role: 'Intern Helper', quote: 'Sidharth turns ambitious ideas into polished, easy-to-use products with thoughtful execution.' },
       { id: 2, name: 'NCHS Teacher.', role: 'Educator', quote: 'Sidharth is a great student and has a strong work ethic, making him a valuable asset to any team.' }
-       }
     ],
     gallery: [
       { id: 1, title: 'Workshop highlights', image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80' },
@@ -80,6 +79,52 @@ app.get('/api/data', (req, res) => {
       { id: 1, text: 'Built award-winning school robotics and design projects.' },
       { id: 2, text: 'Created digital tools used by teams and communities globally.' },
       { id: 3, text: 'Mentored students, interns, and creators through guided sprints.' }
+    ],
+    animals: [
+      {
+        id: 1,
+        name: 'Pink',
+        emoji: '🩷',
+        role: 'Design scout',
+        fact: 'Tracks creative systems and weaves color palettes into polished experiences.',
+        tags: ['Strategy', 'UI', 'Motion'],
+        colorAccent: '#f5a6ff',
+        colorStrong: '#8b5cf6',
+        background: 'radial-gradient(circle at 20% 20%, rgba(245,166,255,0.22), transparent 24%), linear-gradient(180deg,#090910,#0d1224)'
+      },
+      {
+        id: 2,
+        name: 'Green',
+        emoji: '💛',
+        role: 'Flow engineer',
+        fact: 'Glides through product journeys with bright interactions and friendly logic.',
+        tags: ['Animation', 'UX', 'Code'],
+        colorAccent: '#6ee7b7',
+        colorStrong: '#10b981',
+        background: 'radial-gradient(circle at 80% 30%, rgba(110,231,183,0.22), transparent 18%), linear-gradient(180deg,#02060b,#081321)'
+      },
+      {
+        id: 3,
+        name: 'Purple',
+        emoji: '💜',
+        role: 'Insight guardian',
+        fact: 'Sees through patterns, making data, stories, and interactivity feel effortless.',
+        tags: ['Research', 'Analytics', 'Storytelling'],
+        colorAccent: '#8b93ff',
+        colorStrong: '#3b82f6',
+        background: 'radial-gradient(circle at 40% 15%, rgba(139,147,255,0.24), transparent 20%), linear-gradient(180deg,#060810,#111a2f)'
+      },
+      {
+        id: 4,
+        name: 'Orange',
+        emoji: '🧡',
+        role: 'Build champion',
+        fact: 'Solves tough problems with clear structure and steady momentum.',
+        tags: ['Architecture', 'Optimization', 'Reliability'],
+        colorAccent: '#fbbf24',
+        colorStrong: '#f59e0b',
+        background: 'radial-gradient(circle at 15% 80%, rgba(251,191,36,0.16), transparent 20%), linear-gradient(180deg,#0c0f16,#131b2c)'
+      }
     ],
     footer: 'This portfolio is updated live via server and refreshed when content changes.'
   };

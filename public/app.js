@@ -210,6 +210,66 @@ function renderContact(contact){
   });
 }
 
+function renderAnimalStudio(animals){
+  const grid = document.getElementById('animal-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  animals.forEach((animal, index) => {
+    const tile = el('button','animal-tile');
+    tile.type = 'button';
+    tile.dataset.index = index;
+    tile.appendChild(el('div','animal-emoji',animal.emoji));
+    tile.appendChild(el('strong',null,animal.name));
+    tile.appendChild(el('div','muted',animal.role));
+    tile.addEventListener('click', () => selectAnimal(animal, tile));
+    grid.appendChild(tile);
+  });
+  if(animals.length) selectAnimal(animals[0], grid.querySelector('.animal-tile'));
+}
+
+function selectAnimal(animal, tile){
+  const detailEmoji = document.getElementById('detail-emoji');
+  const detailName = document.getElementById('detail-name');
+  const detailRole = document.getElementById('detail-role');
+  const detailFact = document.getElementById('detail-fact');
+  const tags = document.getElementById('animal-tags');
+  if(detailEmoji) detailEmoji.textContent = animal.emoji;
+  if(detailName) detailName.textContent = animal.name;
+  if(detailRole) detailRole.textContent = animal.role;
+  if(detailFact) detailFact.textContent = animal.fact;
+  if(tags){
+    tags.innerHTML = '';
+    animal.tags.forEach(tag => tags.appendChild(el('span','animal-tag',tag)));
+  }
+  document.querySelectorAll('.animal-tile.active').forEach(el=> el.classList.remove('active'));
+  if(tile) tile.classList.add('active');
+  document.documentElement.style.setProperty('--accent', animal.colorAccent || '#6dd8ff');
+  document.documentElement.style.setProperty('--accent-strong', animal.colorStrong || '#38bdf8');
+  document.body.style.background = animal.background || '';
+}
+
+function initAnimalStudio(animals){
+  const button = document.getElementById('random-animal');
+  if(!button || !animals || !animals.length) return;
+  button.addEventListener('click', () => {
+    const choice = animals[Math.floor(Math.random() * animals.length)];
+    const tile = document.querySelector(`.animal-tile[data-index="${animals.indexOf(choice)}"]`);
+    if(tile) tile.click();
+    else selectAnimal(choice);
+  });
+}
+
+function animateHeroMarquee(highlights){
+  const marquee = document.getElementById('hero-marquee');
+  if(!marquee || !highlights || !highlights.length) return;
+  let index = 0;
+  marquee.textContent = highlights[index].text;
+  setInterval(() => {
+    index = (index + 1) % highlights.length;
+    marquee.textContent = highlights[index].text;
+  }, 4200);
+}
+
 function renderSearchResults(items){
   const dynamic = document.getElementById('dynamic');
   if(!dynamic) return;
@@ -267,9 +327,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderStats(data.stats);
   renderFeaturedMoment(data.moments[0] || {title:'No moment yet', description:'Edit server data to add your first achievement.'});
   renderHeroMarquee(data.highlights);
+  animateHeroMarquee(data.highlights);
   renderProjects(data.projects);
   renderProjectFilters(['All', ...new Set(data.projects.map(p => p.category))]);
   initProjectFilter(data);
+  renderAnimalStudio(data.animals || []);
+  initAnimalStudio(data.animals || []);
   renderBadges(data.medals);
   renderAchievementSummary(data);
   renderTimeline(data.timeline);

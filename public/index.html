@@ -34,7 +34,10 @@
             <button id="btn-moments" class="btn btn-primary">Story moments</button>
             <button id="btn-milestones" class="btn btn-secondary">Milestone view</button>
           </div>
-          <div class="hero-marquee" id="hero-marquee">Loading highlights...</div>
+          <div class="hero-highlights">
+            <div id="featured-moment" class="featured-moment">Loading featured story...</div>
+            <div class="hero-marquee" id="hero-marquee">Loading highlights...</div>
+          </div>
         </div>
 
         <div class="hero-panel">
@@ -43,6 +46,26 @@
             <div class="hero-image-caption">Beyond code: creativity, impact, and a few stories.</div>
           </div>
           <div class="stat-grid" id="stat-grid"></div>
+        </div>
+      </section>
+
+      <section id="animal-studio" class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Interactive animal studio</h2>
+            <p>Choose a theme and watch the site shift to its tone.</p>
+          </div>
+          <button id="random-animal" class="btn btn-secondary">Surprise me</button>
+        </div>
+        <div class="animal-widget">
+          <div class="animal-grid" id="animal-grid"></div>
+          <div class="animal-detail-card" id="animal-detail-card">
+            <div class="animal-detail-emoji" id="detail-emoji">✨</div>
+            <h3 id="detail-name">Pick a companion</h3>
+            <div id="detail-role" class="muted">Interactive partner for the experience.</div>
+            <p id="detail-fact">Click any animal tile to unlock its style and skill energy.</p>
+            <div id="animal-tags" class="animal-tags"></div>
+          </div>
         </div>
       </section>
 
@@ -60,6 +83,10 @@
           </div>
         </div>
         <div id="project-grid" class="project-grid"></div>
+        <div class="carousel-shell">
+          <div class="carousel-view"><div id="carousel-track" class="carousel-track"></div></div>
+          <div id="carousel-controls" class="carousel-controls"></div>
+        </div>
       </section>
 
       <section id="achievements" class="card section-card">
@@ -122,15 +149,16 @@
           <p>Let's connect about work, mentorship, or the next creative sprint.</p>
           <div id="contact-info" class="contact-grid"></div>
         </div>
-        <form class="contact-form" action="mailto:hello@sidharth.dev" method="get" enctype="text/plain">
+        <form id="contact-form" class="contact-form" action="mailto:hello@sidharth.dev" method="get" enctype="text/plain">
           <label>
             Your email
-            <input type="email" placeholder="you@example.com" />
+            <input name="email" type="email" placeholder="you@example.com" />
           </label>
           <label>
             Message
-            <textarea rows="5" placeholder="Tell me about your idea or collaboration..."></textarea>
+            <textarea name="message" rows="5" placeholder="Tell me about your idea or collaboration..."></textarea>
           </label>
+          <div id="contact-status" class="contact-status"></div>
           <button class="btn btn-primary" type="submit">Email me</button>
         </form>
       </section>
