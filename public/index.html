@@ -23,6 +23,7 @@
       </div>
     </header>
 
+    <div id="particle-field" class="particle-field"></div>
     <main class="container">
       <section id="about" class="hero card hero-grid">
         <div class="hero-copy">
@@ -73,19 +74,23 @@
         <div class="section-head">
           <div>
             <h2>Featured work</h2>
-            <p>High-energy projects with visuals, categories, and image previews.</p>
-          </div>
-          <div class="filter-row">
-            <div class="search-wrapper">
-              <input id="search" placeholder="Search by project, skill, or achievement" />
-            </div>
-            <div id="project-filters" class="filter-pill-row"></div>
+            <p>Auto-scrolling showcase of my best projects.</p>
           </div>
         </div>
-        <div id="project-grid" class="project-grid"></div>
         <div class="carousel-shell">
           <div class="carousel-view"><div id="carousel-track" class="carousel-track"></div></div>
           <div id="carousel-controls" class="carousel-controls"></div>
+          <div class="carousel-status" id="carousel-status">1 / 3</div>
+        </div>
+      </section>
+
+      <section id="fun-facts" class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>⚡ Fun fact moment</h2>
+            <p id="fun-fact-text">Loading something cool...</p>
+          </div>
+          <button id="refresh-fun-fact" class="btn btn-secondary">Surprise me</button>
         </div>
       </section>
 

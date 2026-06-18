@@ -126,6 +126,23 @@ app.get('/api/data', (req, res) => {
         background: 'radial-gradient(circle at 15% 80%, rgba(251,191,36,0.16), transparent 20%), linear-gradient(180deg,#0c0f16,#131b2c)'
       }
     ],
+    funFacts: [
+      '🎨 I design experiences that make people smile.',
+      '🚀 Built 17+ projects that are used by real people.',
+      '💡 Love turning "impossible" into "done".',
+      '🎯 Focus on clarity, simplicity, and joy.',
+      '📚 Lifelong learner, currently exploring AI/ML.',
+      '🎭 Believe in storytelling through code.',
+      '⚡ Best ideas happen at 3 AM (or with coffee).',
+      '🌍 Remote-first, community-driven, always shipping.',
+      '🎵 Keyboard shortcuts are my second language.',
+      '✨ Making the web beautiful, one pixel at a time.',
+      '🔧 I debug by rubber ducking (talking to my plants).',
+      '🎬 Every project is a short film in my head first.',
+      '🌟 Bug: "It works on my machine!" Feature: It will now work anywhere.',
+      '⚙️ There\'s no such thing as "just frontend" or "just backend"—it\'s all a vibe.',
+      '🎪 My favorite code is the code I don\'t have to write.'
+    ],
     footer: 'This portfolio is updated live via server and refreshed when content changes.'
   };
   res.json(data);

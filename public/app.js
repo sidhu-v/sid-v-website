@@ -27,6 +27,7 @@ function renderStats(stats){
   grid.innerHTML = '';
   stats.forEach(stat => {
     const card = el('div','stat-card');
+    card.setAttribute('data-stat-id', stat.id);
     card.appendChild(el('div','stat-icon',stat.icon));
     card.appendChild(el('div','stat-value',stat.value));
     card.appendChild(el('div','stat-label',stat.label));
@@ -323,6 +324,13 @@ function initProjectFilter(data){
 
 document.addEventListener('DOMContentLoaded', async () => {
   const data = await loadData();
+  
+  // Initialize interactive features
+  initParticleField();
+  initTypingAnimation();
+  initEasterEggs();
+  
+  // Render content
   renderProfile(data.profile);
   renderStats(data.stats);
   renderFeaturedMoment(data.moments[0] || {title:'No moment yet', description:'Edit server data to add your first achievement.'});
@@ -341,6 +349,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderGallery(data.gallery);
   renderContact(data.contact);
   document.getElementById('footer-note').textContent = data.footer;
+
+  // Fun facts and carousel
+  initFunFacts(data);
+  enhanceStats(data);
 
   const btnMom = document.getElementById('btn-moments');
   if(btnMom) btnMom.addEventListener('click', () => {
@@ -367,61 +379,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     renderSearchResults(items);
   });
+  
   setupThemeToggle();
-  initReveal();
+  enhanceReveal();
   initCarousel(data.projects);
   initContactForm();
 
-  const footerEl = document.getElementById('footer-note'); if(footerEl) footerEl.textContent = data.footer;
+  const footerEl = document.getElementById('footer-note'); 
+  if(footerEl) footerEl.textContent = data.footer;
 });
-
-// Scroll reveal animations using IntersectionObserver
-function initReveal(){
-  const obs = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add('reveal-visible');
-        obs.unobserve(e.target);
-      }
-    });
-  },{threshold:0.12});
-  document.querySelectorAll('.card, .project-card, .timeline-row, .testimonial-card, .gallery-card').forEach(el=>{
-    el.classList.add('reveal');
-    obs.observe(el);
-  });
-}
-
-// Simple carousel implementation
-function initCarousel(projects){
-  const track = document.getElementById('carousel-track');
-  const controls = document.getElementById('carousel-controls');
-  if(!track || !projects || !projects.length) return;
-  track.innerHTML = '';
-  projects.forEach(p=>{
-    const slide = document.createElement('div');
-    slide.className = 'carousel-slide';
-    slide.innerHTML = `<img src="${p.image}" alt="${p.title}" style="width:100%;height:360px;object-fit:cover;display:block"/><div style="padding:14px;background:rgba(0,0,0,0.5);color:#fff"> <strong>${p.title}</strong><div class=\"muted\">${p.tagline || p.category}</div><p style=\"margin-top:8px\">${p.summary}</p></div>`;
-    track.appendChild(slide);
-  });
-  let index=0;
-  const slides = Array.from(track.children);
-  function update(){
-    track.style.transform = `translateX(-${index*100}%)`;
-    controls.querySelectorAll('button').forEach((b,i)=> b.classList.toggle('active', i===index));
-  }
-  slides.forEach((s,i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'btn';
-    btn.textContent = i+1;
-    btn.addEventListener('click', ()=>{ index=i; update(); });
-    controls.appendChild(btn);
-  });
-  // auto-advance
-  let timer = setInterval(()=>{ index=(index+1)%slides.length; update(); }, 5000);
-  controls.addEventListener('mouseenter', ()=> clearInterval(timer));
-  controls.addEventListener('mouseleave', ()=> timer = setInterval(()=>{ index=(index+1)%slides.length; update(); }, 5000));
-  update();
-}
 
 // Contact form handler posts to /api/contact
 function initContactForm(){
