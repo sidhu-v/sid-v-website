@@ -7,31 +7,94 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="logo">Sidharth V.</div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/work.html">Work</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container">
-    <section class="card">
-      <h2>Achievements & Timeline</h2>
-      <p class="muted">Segmented timeline with high school, college, and career stages.</p>
-      <div id="timeline-list" class="timeline-list"></div>
-    </section>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="/" class="logo" style="text-decoration:none;color:inherit;">Sidharth V.</a>
+        <div class="top-controls">
+          <button id="theme-toggle" class="btn btn-icon">🌙</button>
+          <button id="audio-toggle" class="btn btn-icon" title="Audio-reactive visuals">🔊</button>
+          <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/work.html">Work</a>
+            <a href="/achievements.html" style="color:var(--accent);">Achievements</a>
+            <a href="/#contact">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </header>
 
-    <section class="card">
-      <h2>Badges & Moments</h2>
-      <div id="badge-row" class="badge-row"></div>
-      <div id="dynamic" class="grid grid-3"></div>
-    </section>
-  </main>
-  <footer class="site-footer"><div class="container">Back to <a href="/">home</a></div></footer>
+    <div id="particle-field" class="particle-field"></div>
+    <main class="container">
+      <section class="card" style="margin-bottom:32px;">
+        <span class="eyebrow">Achievements</span>
+        <h1 style="margin:16px 0 8px;font-size:clamp(2rem, 4vw, 3rem);">Milestones & Medals</h1>
+        <p style="color:var(--muted);font-size:1.05rem;" id="achievement-summary">Loading...</p>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>🏆 Badges & Awards</h2>
+            <p>Recognition and achievements from competitions, projects, and roles.</p>
+          </div>
+        </div>
+        <div id="badge-row" class="badge-row"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>📅 Timeline</h2>
+            <p>Journey through high school, college, and professional chapters.</p>
+          </div>
+        </div>
+        <div id="timeline-list" class="timeline-list"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>✨ Moments & Highlights</h2>
+            <p>Key projects, stories, and milestones worth remembering.</p>
+          </div>
+        </div>
+        <div id="dynamic" class="grid grid-3"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container"><span id="footer-note">Loading footer note…</span></div>
+    </footer>
+  </div>
+
   <script src="/app.js"></script>
+  <script>
+    async function loadAchievementsPage(){
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      
+      // Render badges
+      renderBadges(data.medals);
+      renderAchievementSummary(data);
+      
+      // Render timeline
+      renderTimeline(data.timeline);
+      
+      // Render moments
+      renderSearchResults(data.moments.map(m => ({...m, title:m.title, description:m.description, date:m.date, type:'Moment'})));
+      
+      // Setup theme and particles
+      setupThemeToggle();
+      initParticleField();
+      enhanceReveal();
+      
+      // Footer
+      document.getElementById('footer-note').textContent = data.footer;
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadAchievementsPage);
+  </script>
 </body>
 </html>

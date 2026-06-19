@@ -7,43 +7,113 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="logo">Sidharth V.</div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/work.html">Work</a>
-        <a href="/achievements.html">Achievements</a>
-        <a href="/about.html">About</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container">
-    <section class="card contact-section">
-      <div>
-        <h2>Contact zone</h2>
-        <p class="muted">Choose an option to reach out — or use the form to send a message directly.</p>
-        <div id="contact-info" class="contact-grid"></div>
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <a class="btn" href="mailto:hello@sidharth.dev">Email</a>
-          <a class="btn" href="https://wa.me/919876543210">WhatsApp</a>
-          <a class="btn" href="https://linkedin.com" target="_blank">LinkedIn</a>
-          <a class="btn" href="https://calendly.com" target="_blank">Schedule</a>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="/" class="logo" style="text-decoration:none;color:inherit;">Sidharth V.</a>
+        <div class="top-controls">
+          <button id="theme-toggle" class="btn btn-icon">🌙</button>
+          <button id="audio-toggle" class="btn btn-icon" title="Audio-reactive visuals">🔊</button>
+          <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/work.html">Work</a>
+            <a href="/achievements.html">Achievements</a>
+            <a href="/contact.html" style="color:var(--accent);">Contact</a>
+          </nav>
         </div>
       </div>
-      <form id="contact-form" class="contact-form">
-        <label> Your name <input name="name" required /></label>
-        <label> Your email <input name="email" type="email" required /></label>
-        <label> Subject <input name="subject" /></label>
-        <label> Message <textarea name="message" rows="6" required></textarea></label>
-        <div style="display:flex;gap:10px;align-items:center">
-          <button class="btn btn-primary" type="submit">Send message</button>
-          <div id="contact-status" class="muted"></div>
+    </header>
+
+    <div id="particle-field" class="particle-field"></div>
+    <main class="container">
+      <section class="card" style="margin-bottom:32px;">
+        <span class="eyebrow">Get in Touch</span>
+        <h1 style="margin:16px 0 8px;font-size:clamp(2rem, 4vw, 3rem);">Let's connect & create</h1>
+        <p style="color:var(--muted);font-size:1.05rem;">Open to collaborations, feedback, mentoring, or just a chat about tech and design.</p>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Contact Information</h2>
+            <p>Reach me through any of these channels.</p>
+          </div>
         </div>
-      </form>
-    </section>
-  </main>
-  <footer class="site-footer"><div class="container">Back to <a href="/">home</a></div></footer>
+        <div id="contact-info" class="contact-grid" style="margin-bottom:24px;"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Quick Links</h2>
+            <p>Connect with me on social platforms.</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
+          <a class="btn btn-secondary" href="https://linkedin.com" target="_blank">🔗 LinkedIn</a>
+          <a class="btn btn-secondary" href="https://github.com" target="_blank">🐙 GitHub</a>
+          <a class="btn btn-secondary" href="https://twitter.com" target="_blank">🐦 Twitter</a>
+          <a class="btn btn-secondary" href="mailto:hello@sidharth.dev">📧 Email</a>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Send a Message</h2>
+            <p>Fill the form below and I'll get back to you soon.</p>
+          </div>
+        </div>
+        <form id="contact-form" class="contact-form">
+          <label>
+            Your name
+            <input name="name" type="text" placeholder="Jane Doe" required />
+          </label>
+          <label>
+            Your email
+            <input name="email" type="email" placeholder="jane@example.com" required />
+          </label>
+          <label>
+            Subject
+            <input name="subject" type="text" placeholder="Let's talk about..." />
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="5" placeholder="Tell me about your idea or collaboration..." required></textarea>
+          </label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary" type="submit">Send message</button>
+            <div id="contact-status" class="muted" style="font-size:0.95rem;"></div>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container"><span id="footer-note">Loading footer note…</span></div>
+    </footer>
+  </div>
+
   <script src="/app.js"></script>
+  <script>
+    async function loadContactPage(){
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      
+      // Render contact info
+      renderContact(data.contact);
+      
+      // Setup theme and particles
+      setupThemeToggle();
+      initParticleField();
+      initContactForm();
+      
+      // Footer
+      document.getElementById('footer-note').textContent = data.footer;
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadContactPage);
+  </script>
 </body>
 </html>

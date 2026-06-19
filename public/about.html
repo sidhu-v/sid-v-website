@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Sidharth</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="/" class="logo" style="text-decoration:none;color:inherit;">Sidharth V.</a>
+        <div class="top-controls">
+          <button id="theme-toggle" class="btn btn-icon">🌙</button>
+          <button id="audio-toggle" class="btn btn-icon" title="Audio-reactive visuals">🔊</button>
+          <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/work.html">Work</a>
+            <a href="/achievements.html">Achievements</a>
+            <a href="/#contact">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div id="particle-field" class="particle-field"></div>
+    <main class="container">
+      <section class="card" style="margin-bottom:32px;">
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;">
+          <div>
+            <span class="eyebrow">About me</span>
+            <h1 style="margin:16px 0 24px;font-size:clamp(2.2rem, 5vw, 3.2rem);">Designing for impact, one project at a time</h1>
+            <p id="bio-full" style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin:0;">Loading bio...</p>
+          </div>
+          <div class="hero-image-card">
+            <img id="hero-avatar" src="" alt="Profile" style="height:100%;" />
+            <div class="hero-image-caption">Currently exploring AI/ML and building with purpose.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>My Journey</h2>
+            <p>From robotics to design systems—a path of continuous learning.</p>
+          </div>
+        </div>
+        <div id="timeline-list" class="timeline-list"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Skills & Expertise</h2>
+            <p>Technical depth across design, code, and product strategy.</p>
+          </div>
+        </div>
+        <div class="skill-grid">
+          <div id="skill-list" class="skill-list"></div>
+          <div class="skill-image-area">
+            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80" alt="Creative workspace" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Stats & Recognition</h2>
+            <p>Numbers that reflect the work and impact.</p>
+          </div>
+        </div>
+        <div class="stat-grid" id="stat-grid"></div>
+      </section>
+
+      <section class="card section-card">
+        <h2>What people say</h2>
+        <div id="testimonial-grid" class="testimonial-grid"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container"><span id="footer-note">Loading footer note…</span></div>
+    </footer>
+  </div>
+  <script src="/app.js"></script>
+  <script>
+    // Load data and render About page
+    async function loadAboutPage(){
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      
+      // Bio section
+      const bioEl = document.getElementById('bio-full');
+      if(bioEl) bioEl.textContent = data.profile.bio + ' I specialize in creating digital experiences that blend storytelling, design, and technology to solve real problems and create lasting impact.';
+      
+      // Avatar
+      const avatar = document.getElementById('hero-avatar');
+      if(avatar) avatar.src = data.profile.avatar;
+      
+      // Timeline
+      const container = document.getElementById('timeline-list');
+      if(container){
+        container.innerHTML = '';
+        const grouped = data.timeline.reduce((acc, entry) => {
+          acc[entry.stage] = acc[entry.stage] || [];
+          acc[entry.stage].push(entry);
+          return acc;
+        }, {});
+        Object.keys(grouped).forEach(stage => {
+          const stageCard = document.createElement('div');
+          stageCard.className = 'project-card';
+          stageCard.style.padding = '18px';
+          const heading = document.createElement('h3');
+          heading.textContent = stage;
+          stageCard.appendChild(heading);
+          grouped[stage].sort((a,b) => b.when - a.when).forEach(entry => {
+            const row = document.createElement('div');
+            row.className = 'timeline-row';
+            row.innerHTML = `<div class="muted">${entry.when}</div><div><div>${entry.title}</div><div class="muted">${entry.detail}</div><span class="timeline-tag">${entry.category}</span></div>`;
+            stageCard.appendChild(row);
+          });
+          container.appendChild(stageCard);
+        });
+      }
+      
+      // Skills
+      const skillList = document.getElementById('skill-list');
+      if(skillList){
+        skillList.innerHTML = '';
+        data.skills.forEach(skill => {
+          const card = document.createElement('div');
+          card.className = 'skill-card';
+          const header = document.createElement('strong');
+          header.textContent = skill.name;
+          const bar = document.createElement('div');
+          bar.className = 'skill-bar';
+          const fill = document.createElement('div');
+          fill.className = 'skill-fill';
+          fill.style.width = Math.min(Math.max(skill.level, 0), 100) + '%';
+          bar.appendChild(fill);
+          card.appendChild(header);
+          card.appendChild(bar);
+          skillList.appendChild(card);
+          requestAnimationFrame(() => {
+            fill.style.transform = `scaleX(${skill.level / 100})`;
+          });
+        });
+      }
+      
+      // Stats
+      const grid = document.getElementById('stat-grid');
+      if(grid){
+        grid.innerHTML = '';
+        data.stats.forEach(stat => {
+          const card = document.createElement('div');
+          card.className = 'stat-card';
+          card.innerHTML = `<div class="stat-icon">${stat.icon}</div><div class="stat-value">${stat.value}</div><div class="stat-label">${stat.label}</div>`;
+          grid.appendChild(card);
+        });
+      }
+      
+      // Testimonials
+      const testimonialGrid = document.getElementById('testimonial-grid');
+      if(testimonialGrid){
+        testimonialGrid.innerHTML = '';
+        data.testimonials.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'testimonial-card';
+          card.innerHTML = `<blockquote>${item.quote}</blockquote><p class="role">${item.name} · ${item.role}</p>`;
+          testimonialGrid.appendChild(card);
+        });
+      }
+      
+      // Footer
+      document.getElementById('footer-note').textContent = data.footer;
+      
+      // Setup theme toggle
+      setupThemeToggle();
+      initParticleField();
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadAboutPage);
+  </script>
+</body>
+</html>

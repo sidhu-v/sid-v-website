@@ -50,6 +50,7 @@ function renderProjects(projects){
   grid.innerHTML = '';
   projects.forEach(project => {
     const card = el('div','project-card');
+    card.dataset.projectId = project.id;
     const image = document.createElement('img');
     image.src = project.image;
     image.alt = project.title;
@@ -67,8 +68,137 @@ function renderProjects(projects){
     link.target = '_blank';
     content.appendChild(link);
     card.appendChild(content);
+    // open modal on click to show richer project details
+    card.addEventListener('click', (ev) => {
+      // avoid opening when clicking the external link
+      if(ev.target.tagName.toLowerCase() === 'a') return;
+      openProjectModal(project);
+    });
     grid.appendChild(card);
   });
+}
+
+// Project modal
+function openProjectModal(project){
+  const modal = document.getElementById('project-modal');
+  const content = document.getElementById('project-modal-content');
+  if(!modal || !content) return;
+  content.innerHTML = '';
+  const header = el('div','modal-header');
+  header.appendChild(el('h2',null,project.title));
+  header.appendChild(el('div','muted',`${project.category} · ${project.tagline}`));
+  content.appendChild(header);
+  const img = document.createElement('img'); img.src = project.image; img.alt = project.title; img.style.width='100%'; img.style.borderRadius='12px';
+  content.appendChild(img);
+  content.appendChild(el('p',null,project.summary));
+  const tags = el('div','filter-pill-row'); project.tags.forEach(t => tags.appendChild(el('span','filter-pill',t)));
+  content.appendChild(tags);
+  const ext = el('a','btn btn-primary','Open project'); ext.href = project.url; ext.target = '_blank'; ext.style.display='inline-block'; ext.style.marginTop='12px';
+  content.appendChild(ext);
+  modal.setAttribute('aria-hidden','false');
+  modal.classList.add('open');
+}
+
+document.addEventListener('click', (ev)=>{
+  const modal = document.getElementById('project-modal');
+  if(!modal) return;
+  if(ev.target.id === 'project-modal' || ev.target.id === 'project-modal-close'){
+    modal.setAttribute('aria-hidden','true'); modal.classList.remove('open');
+  }
+});
+
+// --- Advanced visuals: animated SVG hero and audio-reactive canvas ---
+let audioLevel = 0;
+function setupHeroSVGAnimation(){
+  const path = document.getElementById('hero-path');
+  if(!path) return;
+  const len = path.getTotalLength();
+  path.style.strokeDasharray = `${len} ${len}`;
+  let offset = 0;
+  function loop(){
+    // react to audioLevel (0..1)
+    const speed = 0.8 + (audioLevel || 0) * 6;
+    offset = (offset + speed) % len;
+    path.style.strokeDashoffset = Math.abs(Math.sin(offset/80)) * 14 + offset * 0.02;
+    // subtle color shift
+    const g = Math.floor(120 + audioLevel*120);
+    path.setAttribute('stroke', `rgba(${200 - g}, ${220 - g/2}, ${255}, ${0.2 + audioLevel*0.6})`);
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+async function initAudioReactivity(){
+  const canvas = document.getElementById('audio-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  // Try microphone first
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = audioCtx.createMediaStreamSource(stream);
+    const analyser = audioCtx.createAnalyser(); analyser.fftSize = 256;
+    src.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    function draw(){
+      analyser.getByteFrequencyData(data);
+      let sum = 0; for(let i=0;i<data.length;i++) sum += data[i];
+      const avg = sum / data.length / 255;
+      audioLevel = Math.min(1, avg*1.6);
+      // draw waveform
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = `rgba(109,216,255,0.06)`;
+      const w = canvas.width; const h = canvas.height;
+      for(let i=0;i<data.length;i++){
+        const x = (i/data.length) * w;
+        const hval = (data[i]/255) * h * audioLevel * 1.4;
+        ctx.fillRect(x, (h-hval)/2, Math.max(1,w/data.length), hval);
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }catch(err){
+    // fallback: ambient pulsing animation
+    let t = 0; function idle(){ audioLevel = 0.05 + 0.05*Math.sin(t); t += 0.04; const c = ctx; c.clearRect(0,0,canvas.width,canvas.height); c.fillStyle='rgba(255,255,255,0.03)'; c.beginPath(); c.ellipse(canvas.width/2, canvas.height/2, 80+Math.sin(t)*20, 18+Math.cos(t)*6, 0,0,Math.PI*2); c.fill(); requestAnimationFrame(idle);} idle();
+  }
+}
+
+function setupThemePresets(){
+  document.querySelectorAll('.preset').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      const p = btn.dataset.preset;
+      if(p === 'ocean'){
+        document.documentElement.style.setProperty('--accent', '#6ee7b7');
+        document.documentElement.style.setProperty('--accent-strong', '#10b981');
+        document.body.style.background = 'linear-gradient(180deg,#071a2b,#021017)';
+      }else if(p === 'sunset'){
+        document.documentElement.style.setProperty('--accent', '#ffb86b');
+        document.documentElement.style.setProperty('--accent-strong', '#ff6b8a');
+        document.body.style.background = 'linear-gradient(180deg,#ff9a8b,#3d1b4a)';
+      }else{
+        document.documentElement.style.setProperty('--accent', '#cbd5e1');
+        document.documentElement.style.setProperty('--accent-strong', '#94a3b8');
+        document.body.style.background = 'linear-gradient(180deg,#0b1220,#07101a)';
+      }
+    });
+  });
+}
+
+function setupScrollStory(){
+  // parallax for hero image and simple scroll progress
+  const hero = document.querySelector('.hero');
+  const avatar = document.getElementById('hero-avatar');
+  if(!hero || !avatar) return;
+  window.addEventListener('scroll', ()=>{
+    const rect = hero.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, 1 - (rect.top / window.innerHeight)));
+    avatar.style.transform = `translateY(${pct*8}px) scale(${1 - pct*0.02})`;
+  });
+  // reveal story segments
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('reveal-visible'); });
+  }, { threshold: 0.16 });
+  document.querySelectorAll('[data-story]').forEach(el=> observer.observe(el));
 }
 
 function renderProjectFilters(categories){
@@ -354,6 +484,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFunFacts(data);
   enhanceStats(data);
 
+  // Advanced setup
+  setupHeroSVGAnimation();
+  setupThemePresets();
+  setupScrollStory();
+
+  // audio toggle wiring
+  const audioBtn = document.getElementById('audio-toggle');
+  let audioActive = false;
+  if(audioBtn){
+    audioBtn.addEventListener('click', async ()=>{
+      if(!audioActive){
+        audioBtn.classList.add('active');
+        audioBtn.textContent = '🎧';
+        await initAudioReactivity();
+        audioActive = true;
+      } else {
+        audioBtn.classList.remove('active');
+        audioBtn.textContent = '🔊';
+        audioActive = false;
+        audioLevel = 0;
+      }
+    });
+  }
+
   const btnMom = document.getElementById('btn-moments');
   if(btnMom) btnMom.addEventListener('click', () => {
     renderSearchResults(data.moments.map(m => ({...m, title:m.title, description:m.description, date:m.date, type:'Moment'})));
@@ -384,6 +538,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   enhanceReveal();
   initCarousel(data.projects);
   initContactForm();
+  
+  // Setup new interactive features
+  setupQuoteRotation();
+  setupNewsletterSubscription();
+  setupScrollAnimations();
+  animateGrowthChart();
 
   const footerEl = document.getElementById('footer-note'); 
   if(footerEl) footerEl.textContent = data.footer;
@@ -405,5 +565,321 @@ function initContactForm(){
       else status.textContent = json.error || 'Send failed';
     }catch(err){ status.textContent = 'Network error'; }
     setTimeout(()=> status.textContent = '', 5000);
+  });
+}
+
+// --- Missing interactive helpers (lightweight implementations) ---
+function initParticleField(){
+  const container = document.getElementById('particle-field');
+  if(!container) return;
+  // create canvas
+  let canvas = container.querySelector('canvas');
+  if(!canvas){
+    canvas = document.createElement('canvas');
+    container.appendChild(canvas);
+  }
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  function resize(){
+    w = canvas.width = container.clientWidth || window.innerWidth;
+    h = canvas.height = container.clientHeight || 200;
+    particles = Array.from({length: Math.max(12, Math.floor(w/120))}).map(()=>({
+      x: Math.random()*w, y: Math.random()*h, r: Math.random()*2+0.6, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, alpha: Math.random()*0.6+0.2
+    }));
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  let raf;
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
+      if(p.y < -10) p.y = h+10; if(p.y > h+10) p.y = -10;
+      ctx.beginPath(); ctx.fillStyle = `rgba(255,255,255,${p.alpha})`; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    });
+    raf = requestAnimationFrame(draw);
+  }
+  draw();
+  // store to stop later if needed
+  container._particleCancel = ()=> cancelAnimationFrame(raf);
+}
+
+function initTypingAnimation(){
+  const target = document.getElementById('title');
+  if(!target) return;
+  const obs = new MutationObserver(muts => {
+    muts.forEach(m => {
+      if(m.type === 'childList'){
+        const newText = target.textContent || '';
+        target.textContent = '';
+        let i = 0;
+        const id = setInterval(()=>{
+          target.textContent += newText.charAt(i++);
+          if(i > newText.length){ clearInterval(id); }
+        }, 22);
+      }
+    });
+  });
+  obs.observe(target, { childList: true, characterData: true, subtree: true });
+}
+
+function initEasterEggs(){
+  // simple key toggle for accent glow
+  window.addEventListener('keydown', (ev)=>{
+    if(ev.key === 'g'){ document.body.classList.toggle('glow-accent'); }
+  });
+  const logo = document.querySelector('.logo');
+  if(logo) logo.addEventListener('dblclick', ()=> document.body.classList.toggle('show-grid'));
+}
+
+function initFunFacts(data){
+  const txt = document.getElementById('fun-fact-text');
+  const btn = document.getElementById('refresh-fun-fact');
+  if(!txt || !data || !data.funFacts) return;
+  function pick(){
+    const choice = data.funFacts[Math.floor(Math.random()*data.funFacts.length)];
+    txt.textContent = choice;
+  }
+  pick();
+  if(btn) btn.addEventListener('click', pick);
+}
+
+function enhanceStats(data){
+  const cards = document.querySelectorAll('.stat-card');
+  cards.forEach(card => {
+    const valueEl = card.querySelector('.stat-value');
+    if(!valueEl) return;
+    const raw = valueEl.textContent || '';
+    const num = parseInt(raw.replace(/[^0-9]/g,''),10);
+    if(Number.isFinite(num) && num > 0){
+      let cur = 0; const dur = 900; const start = performance.now();
+      function step(now){
+        const t = Math.min(1, (now - start) / dur);
+        const v = Math.floor(t * num);
+        valueEl.textContent = raw.includes('+') ? `${v}+` : `${v}`;
+        if(t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    } else {
+      valueEl.style.opacity = 0; requestAnimationFrame(()=> valueEl.style.transition='opacity .4s', valueEl.style.opacity=1);
+    }
+  });
+}
+
+function enhanceReveal(){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(en => {
+      if(en.isIntersecting) en.target.classList.add('in-view');
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.card, .project-card, .testimonial-card, .gallery-card, .animal-detail-card').forEach(el=> io.observe(el));
+}
+
+function initCarousel(projects){
+  const track = document.getElementById('carousel-track');
+  const controls = document.getElementById('carousel-controls');
+  const status = document.getElementById('carousel-status');
+  if(!track || !projects || !projects.length) return;
+  track.innerHTML = '';
+  projects.forEach((p, i)=>{
+    const slide = document.createElement('div'); 
+    slide.className = 'carousel-slide';
+    slide.dataset.index = i;
+    const img = document.createElement('img'); 
+    img.src = p.image; 
+    img.alt = p.title; 
+    img.className='carousel-image';
+    const content = document.createElement('div'); 
+    content.className='carousel-slide-content'; 
+    content.appendChild(el('h3',null,p.title)); 
+    content.appendChild(el('div','muted',p.tagline || p.category || p.summary || ''));
+    slide.appendChild(img); 
+    slide.appendChild(content);
+    track.appendChild(slide);
+  });
+  let index = 0; 
+  const slides = track.children; 
+  const total = slides.length;
+  function update(){
+    const offset = -index * 100;
+    track.style.transform = `translateX(${offset}%)`;
+    Array.from(slides).forEach((s,i)=> {
+      s.classList.toggle('active', i === index);
+    });
+    if(status) status.textContent = `${index+1} / ${total}`;
+  }
+  update();
+  const prev = el('button','btn btn-icon','‹'); 
+  const next = el('button','btn btn-icon','›');
+  prev.addEventListener('click', ()=> { index = (index-1+total)%total; update(); });
+  next.addEventListener('click', ()=> { index = (index+1)%total; update(); });
+  controls.appendChild(prev); 
+  controls.appendChild(next);
+  let auto = setInterval(()=> { index = (index+1)%total; update(); }, 4500);
+  track.addEventListener('mouseenter', ()=> clearInterval(auto));
+  track.addEventListener('mouseleave', ()=> auto = setInterval(()=> { index = (index+1)%total; update(); }, 4500));
+}
+
+function setupQuoteRotation(){
+  const quotes = [
+    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { text: "Innovation distinguishes between a leader and a follower.", author: "Steve Jobs" },
+    { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+    { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+    { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
+    { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
+    { text: "In the end, we only regret the chances we didn't take.", author: "Lewis Carroll" },
+    { text: "Success is not final, failure is not fatal.", author: "Winston Churchill" },
+    { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+    { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" }
+  ];
+  
+  let currentQuote = 0;
+  const nextBtn = document.getElementById('next-quote');
+  if(!nextBtn) return;
+  
+  function displayQuote(){
+    const quote = quotes[currentQuote];
+    const quoteEl = document.getElementById('quote-text');
+    const authorEl = document.getElementById('quote-author');
+    if(quoteEl) quoteEl.textContent = `"${quote.text}"`;
+    if(authorEl) authorEl.textContent = `— ${quote.author}`;
+  }
+  
+  displayQuote();
+  nextBtn.addEventListener('click', ()=> {
+    currentQuote = (currentQuote + 1) % quotes.length;
+    displayQuote();
+  });
+  
+  setInterval(()=> {
+    currentQuote = (currentQuote + 1) % quotes.length;
+    displayQuote();
+  }, 8000);
+}
+
+function setupNewsletterSubscription(){
+  const emailInput = document.getElementById('newsletter-email');
+  const btn = document.getElementById('newsletter-btn');
+  const status = document.getElementById('newsletter-status');
+  
+  if(!btn) return;
+  
+  btn.addEventListener('click', (e)=> {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    
+    if(!email){
+      status.textContent = '❌ Please enter an email address';
+      status.style.color = '#ff6b6b';
+      return;
+    }
+    
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      status.textContent = '❌ Please enter a valid email address';
+      status.style.color = '#ff6b6b';
+      return;
+    }
+    
+    status.textContent = '✅ Thanks for subscribing! Check your inbox.';
+    status.style.color = 'var(--accent)';
+    emailInput.value = '';
+    
+    setTimeout(()=> {
+      status.textContent = '';
+    }, 3000);
+  });
+}
+
+function animateGrowthChart(){
+  const chart = document.getElementById('growth-chart');
+  if(!chart) return;
+  
+  const polyline = chart.querySelector('polyline');
+  if(!polyline) return;
+  
+  const length = polyline.getTotalLength();
+  polyline.style.strokeDasharray = length;
+  polyline.style.strokeDashoffset = length;
+  polyline.style.transition = 'stroke-dashoffset 2s ease-in-out';
+  
+  setTimeout(()=> {
+    polyline.style.strokeDashoffset = 0;
+  }, 100);
+  
+  const circles = chart.querySelectorAll('circle[data-index]');
+  circles.forEach((circle, i)=> {
+    circle.style.opacity = '0';
+    circle.style.animation = `none`;
+    setTimeout(()=> {
+      circle.style.animation = `pulse 0.8s ease-out`;
+      circle.style.opacity = '1';
+    }, 200 + i * 150);
+  });
+}
+
+function setupScrollAnimations(){
+  const observer = new IntersectionObserver((entries)=> {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+        if(entry.target.id === 'growth-chart' || entry.target.parentElement?.id === 'growth-chart'){
+          animateGrowthChart();
+        }
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.opacity = '0';
+    observer.observe(card);
+  });
+}
+
+function renderQuotesSection(){
+  const quoteSection = document.getElementById('quote-section');
+  if(!quoteSection) return;
+  
+  const quotes = [
+    { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+    { text: "Innovation distinguishes between a leader and a follower.", author: "Steve Jobs" },
+    { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" }
+  ];
+  
+  const quote = quotes[0];
+  quoteSection.innerHTML = `
+    <h2>💭 Daily Inspiration</h2>
+    <div style="margin:24px 0;">
+      <p id="quote-text" style="font-size:1.4rem;font-style:italic;color:var(--text);margin:0 0 16px;line-height:1.6;">"${quote.text}"</p>
+      <p id="quote-author" style="color:var(--accent);font-weight:600;margin:0;">— ${quote.author}</p>
+    </div>
+    <button id="next-quote" class="btn btn-secondary" style="margin-top:16px;">Next inspiration ✨</button>
+  `;
+}
+
+function setupContactForm(){
+  const form = document.getElementById('contact-form');
+  if(!form) return;
+  
+  form.addEventListener('submit', (e)=> {
+    e.preventDefault();
+    const email = form.querySelector('input[name="email"]').value;
+    const message = form.querySelector('textarea[name="message"]').value;
+    const status = document.getElementById('contact-status');
+    
+    if(!email || !message){
+      status.textContent = 'Please fill in all fields';
+      status.style.color = '#ff6b6b';
+      return;
+    }
+    
+    status.textContent = '✅ Message sent! I\'ll get back to you soon.';
+    status.style.color = 'var(--accent)';
+    form.reset();
+    
+    setTimeout(()=> {
+      status.textContent = '';
+    }, 3000);
   });
 }

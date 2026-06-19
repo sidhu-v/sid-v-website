@@ -12,12 +12,21 @@
       <div class="container topbar-inner">
         <div class="logo">Sidharth V.</div>
         <div class="top-controls">
-          <button id="theme-toggle" class="btn btn-icon">🌙</button>
+          <div id="theme-menu" class="theme-menu" style="position:relative;display:inline-block;">
+            <button id="theme-toggle" class="btn btn-icon" title="Theme">🌙</button>
+            <div id="theme-dropdown" style="position:absolute;top:100%;right:0;margin-top:8px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px;min-width:160px;display:none;flex-direction:column;gap:8px;z-index:100;">
+              <button class="preset btn btn-secondary" data-preset="ocean" style="width:100%;text-align:left;padding:10px 12px;border-radius:8px;">🌊 Ocean</button>
+              <button class="preset btn btn-secondary" data-preset="sunset" style="width:100%;text-align:left;padding:10px 12px;border-radius:8px;">🌅 Sunset</button>
+              <button class="preset btn btn-secondary" data-preset="mono" style="width:100%;text-align:left;padding:10px 12px;border-radius:8px;">⚫ Mono</button>
+            </div>
+          </div>
+          <button id="audio-toggle" class="btn btn-icon" title="Audio-reactive visuals">🔊</button>
           <nav class="nav-links">
-            <a href="#about">About</a>
-            <a href="#work">Work</a>
-            <a href="#achievements">Achievements</a>
-            <a href="#contact">Contact</a>
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/work.html">Work</a>
+            <a href="/achievements.html">Achievements</a>
+            <a href="/contact.html">Contact</a>
           </nav>
         </div>
       </div>
@@ -29,11 +38,18 @@
         <div class="hero-copy">
           <span class="eyebrow">Story-driven web experiences</span>
           <h1 id="name">Loading name…</h1>
+          <div class="svg-hero" aria-hidden="true">
+            <svg id="hero-svg" viewBox="0 0 800 140" preserveAspectRatio="xMidYMid meet">
+              <path id="hero-path" d="M20 80 C150 10, 350 150, 780 40" stroke="rgba(255,255,255,0.18)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
           <p id="title">Loading title…</p>
           <p id="bio">Loading bio…</p>
           <div class="hero-actions">
-            <button id="btn-moments" class="btn btn-primary">Story moments</button>
-            <button id="btn-milestones" class="btn btn-secondary">Milestone view</button>
+            <a href="/about.html" class="btn btn-primary">About me</a>
+            <a href="/work.html" class="btn btn-secondary">View work</a>
+            <a href="/achievements.html" class="btn btn-secondary">Achievements</a>
+            <a href="/contact.html" class="btn btn-secondary">Get in touch</a>
           </div>
           <div class="hero-highlights">
             <div id="featured-moment" class="featured-moment">Loading featured story...</div>
@@ -46,27 +62,67 @@
             <img id="hero-avatar" src="" alt="Profile image" />
             <div class="hero-image-caption">Beyond code: creativity, impact, and a few stories.</div>
           </div>
+          <canvas id="audio-canvas" class="audio-canvas" width="600" height="160" aria-hidden="true"></canvas>
           <div class="stat-grid" id="stat-grid"></div>
         </div>
       </section>
 
-      <section id="animal-studio" class="card section-card">
-        <div class="section-head">
-          <div>
-            <h2>Interactive animal studio</h2>
-            <p>Choose a theme and watch the site shift to its tone.</p>
+      <section id="intro" class="card section-card" style="text-align:center;padding:60px 40px;">
+        <span class="eyebrow" style="display:block;margin-bottom:16px;">Welcome to my creative corner</span>
+        <h2 style="font-size:clamp(1.8rem,3vw,2.8rem);margin:0 0 16px;line-height:1.3;">Building experiences that matter</h2>
+        <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;max-width:800px;margin:0 auto;">I blend design, code, and storytelling to create digital products that solve real problems and create lasting impact. This is my playground of ideas, projects, and creative explorations.</p>
+      </section>
+
+      <section id="metrics" class="card section-card">
+        <h2 style="margin:0 0 32px;">Impact Metrics & Milestones</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;">
+          <div style="padding:20px;border-radius:16px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2.4rem;font-weight:800;color:var(--accent);margin-bottom:8px;">17+</div>
+            <div style="color:var(--muted);font-size:0.95rem;">Projects Launched</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:8px;">Live and in production</div>
           </div>
-          <button id="random-animal" class="btn btn-secondary">Surprise me</button>
+          <div style="padding:20px;border-radius:16px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2.4rem;font-weight:800;color:var(--accent);margin-bottom:8px;">5+</div>
+            <div style="color:var(--muted);font-size:0.95rem;">Years Coding</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:8px;">Since 2019</div>
+          </div>
+          <div style="padding:20px;border-radius:16px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2.4rem;font-weight:800;color:var(--accent);margin-bottom:8px;">100K+</div>
+            <div style="color:var(--muted);font-size:0.95rem;">Users Impacted</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:8px;">Across all projects</div>
+          </div>
+          <div style="padding:20px;border-radius:16px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2.4rem;font-weight:800;color:var(--accent);margin-bottom:8px;">12</div>
+            <div style="color:var(--muted);font-size:0.95rem;">AP Courses</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:8px;">Advanced learning</div>
+          </div>
         </div>
-        <div class="animal-widget">
-          <div class="animal-grid" id="animal-grid"></div>
-          <div class="animal-detail-card" id="animal-detail-card">
-            <div class="animal-detail-emoji" id="detail-emoji">✨</div>
-            <h3 id="detail-name">Pick a companion</h3>
-            <div id="detail-role" class="muted">Interactive partner for the experience.</div>
-            <p id="detail-fact">Click any animal tile to unlock its style and skill energy.</p>
-            <div id="animal-tags" class="animal-tags"></div>
+      </section>
+
+      <section id="quotes" class="card section-card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+          <div>
+            <h2 style="margin:0 0 24px;font-size:1.8rem;">Inspiration & Quotes</h2>
+            <blockquote style="margin:0;padding:24px;border-left:4px solid var(--accent);background:rgba(109,216,255,0.08);border-radius:8px;font-size:1.1rem;font-style:italic;color:var(--text);line-height:1.8;margin-bottom:16px;\">"The best way to predict the future is to build it."</blockquote>
+            <p style="color:var(--muted);margin:0;">— Alan Kay</p>
+            <button id="next-quote" class="btn btn-secondary" style="margin-top:20px;">Next quote →</button>
           </div>
+          <div style="background:rgba(109,216,255,0.06);border-radius:16px;padding:32px;text-align:center;border:1px solid rgba(109,216,255,0.1);">
+            <div style="font-size:3.6rem;margin-bottom:16px;">💡</div>
+            <p style="color:var(--muted);margin:0;font-size:0.95rem;">Daily inspiration to fuel creativity and drive progress forward.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <h2 style="margin:0 0 24px;">Tech Stack & Tools</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;"><strong style="color:var(--accent);">JavaScript</strong><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Advanced</div></div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;"><strong style="color:var(--accent);">React</strong><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Expert</div></div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;"><strong style="color:var(--accent);">Node.js</strong><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Advanced</div></div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;"><strong style="color:var(--accent);">Python</strong><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Intermediate</div></div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;"><strong style="color:var(--accent);">Design</strong><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Expert</div></div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;"><strong style="color:var(--accent);">AWS</strong><div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Intermediate</div></div>
         </div>
       </section>
 
@@ -76,6 +132,7 @@
             <h2>Featured work</h2>
             <p>Auto-scrolling showcase of my best projects.</p>
           </div>
+          <a href="/work.html" class="btn btn-secondary">View all</a>
         </div>
         <div class="carousel-shell">
           <div class="carousel-view"><div id="carousel-track" class="carousel-track"></div></div>
@@ -85,6 +142,326 @@
       </section>
 
       <section id="fun-facts" class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>⚡ Fun fact moment</h2>
+            <p id="fun-fact-text">Loading something cool...</p>
+          </div>
+          <button id="refresh-fun-fact" class="btn btn-secondary">Surprise me</button>
+        </div>
+      </section>
+
+      <section id="growth" class="card section-card">
+        <h2 style="margin:0 0 24px;">Growth Journey 📈</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+          <div style="background:rgba(109,216,255,0.06);border-radius:16px;padding:24px;border:1px solid rgba(109,216,255,0.1);min-height:300px;display:flex;align-items:center;justify-content:center;">
+            <div style="text-align:center;width:100%;">
+              <svg id="growth-chart" style="width:100%;height:200px;margin-bottom:16px;" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+                <polyline points="10,150 60,140 110,120 160,100 210,70 260,50 310,40 360,20" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="10" cy="150" r="4" fill="var(--accent)"/><circle cx="60" cy="140" r="4" fill="var(--accent)"/><circle cx="110" cy="120" r="4" fill="var(--accent)"/><circle cx="160" cy="100" r="4" fill="var(--accent)"/><circle cx="210" cy="70" r="4" fill="var(--accent)"/><circle cx="260" cy="50" r="4" fill="var(--accent)"/><circle cx="310" cy="40" r="4" fill="var(--accent)"/><circle cx="360" cy="20" r="4" fill="var(--accent)"/>
+              </svg>
+              <p style="color:var(--muted);margin:0;font-size:0.9rem;">Exponential growth in skills and impact</p>
+            </div>
+          </div>
+          <div>
+            <div style="margin-bottom:24px;">
+              <h3 style="margin:0 0 8px;color:var(--accent);">2019 - Foundation</h3>
+              <p style="color:var(--muted);margin:0;font-size:0.95rem;">Started coding journey, first projects</p>
+            </div>
+            <div style="margin-bottom:24px;">
+              <h3 style="margin:0 0 8px;color:var(--accent);">2021 - Acceleration</h3>
+              <p style="color:var(--muted);margin:0;font-size:0.95rem;">Multiple projects, design systems</p>
+            </div>
+            <div style="margin-bottom:24px;">
+              <h3 style="margin:0 0 8px;color:var(--accent);">2023 - Impact</h3>
+              <p style="color:var(--muted);margin:0;font-size:0.95rem;">Leading teams, speaking, mentoring</p>
+            </div>
+            <div>
+              <h3 style="margin:0 0 8px;color:var(--accent);">2024 - Innovation</h3>
+              <p style="color:var(--muted);margin:0;font-size:0.95rem;">Cutting-edge products, 100K+ users</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources" class="card section-card">
+        <h2 style="margin:0 0 24px;">📚 Resources & Recommendations</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">📖 Favorite Books</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Atomic Habits, Design of Everyday Things, Zero to One</p>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🎯 Learning Path</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Frontend → Backend → Full-stack → Leadership</p>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🔗 Communities</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Dev.to, ProductHunt, Designer communities</p>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🎓 Courses</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">MIT OpenCourseWare, Coursera, Udacity</p>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🎨 Design Tools</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Figma, Sketch, Adobe Suite</p>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">⚙️ Dev Tools</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">VS Code, GitHub, Git, Terminal</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="collaborations" class="card section-card">
+        <h2 style="margin:0 0 24px;">🤝 Open to Collaborations</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;">
+          <div style="padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.1),rgba(109,216,255,0.05));border:1px solid rgba(109,216,255,0.15);text-align:center;cursor:pointer;transition:all .24s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(109,216,255,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(109,216,255,0.15)'">
+            <div style="font-size:2rem;margin-bottom:8px;">🚀</div>
+            <div style="font-weight:600;color:var(--text);">Startups</div>
+          </div>
+          <div style="padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.1),rgba(109,216,255,0.05));border:1px solid rgba(109,216,255,0.15);text-align:center;cursor:pointer;transition:all .24s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(109,216,255,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(109,216,255,0.15)'">
+            <div style="font-size:2rem;margin-bottom:8px;">👥</div>
+            <div style="font-weight:600;color:var(--text);">Teams</div>
+          </div>
+          <div style="padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.1),rgba(109,216,255,0.05));border:1px solid rgba(109,216,255,0.15);text-align:center;cursor:pointer;transition:all .24s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(109,216,255,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(109,216,255,0.15)'">
+            <div style="font-size:2rem;margin-bottom:8px;">📈</div>
+            <div style="font-weight:600;color:var(--text);">Consulting</div>
+          </div>
+          <div style="padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.1),rgba(109,216,255,0.05));border:1px solid rgba(109,216,255,0.15);text-align:center;cursor:pointer;transition:all .24s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(109,216,255,0.3)'" onmouseout="this.style.transform='none';this.style.borderColor='rgba(109,216,255,0.15)'">
+            <div style="font-size:2rem;margin-bottom:8px;">🧑‍🏫</div>
+            <div style="font-weight:600;color:var(--text);">Mentoring</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="card section-card">
+        <h2 style="margin:0 0 24px;">💼 Experience Levels</h2>
+        <div id="experience-bars" style="display:grid;gap:20px;">
+          <!-- Experience bars will be dynamically populated -->
+        </div>
+      </section>
+
+      <section id="social-proof" class="card section-card">
+        <h2 style="margin:0 0 24px;">✨ Social Proof & Recognition</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">⭐</div>
+            <div style="font-weight:600;color:var(--text);">12K+ Followers</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Across platforms</div>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">🏆</div>
+            <div style="font-weight:600;color:var(--text);">5 Major Awards</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Industry recognition</div>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">📣</div>
+            <div style="font-weight:600;color:var(--text);">8 Talks Given</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Conferences & events</div>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">📰</div>
+            <div style="font-weight:600;color:var(--text);">15+ Publications</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Written & featured</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="achievements" class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Achievements & Awards</h2>
+            <p>Medals, milestones, and memorable moments.</p>
+          </div>
+          <a href="/achievements.html" class="btn btn-secondary">View all</a>
+        </div>
+        <div class="badge-row" id="badge-row"></div>
+        <div id="dynamic" class="grid grid-3"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Language & Skill Radar</h2>
+            <p>Technical and creative expertise at a glance.</p>
+          </div>
+        </div>
+        <div class="skill-grid">
+          <div id="skill-list" class="skill-list"></div>
+          <div class="skill-image-area">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80" alt="Creative workspace" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card section-card">
+        <h2>Testimonials</h2>
+        <div id="testimonial-grid" class="testimonial-grid"></div>
+      </section>
+
+      <section id="experience" class="card section-card">
+        <h2 style="margin:0 0 24px;">💼 Experience Levels</h2>
+        <div style="display:grid;gap:20px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="color:var(--text);">Product Design</span>
+              <span style="color:var(--accent);">90%</span>
+            </div>
+            <div style="height:8px;background:rgba(109,216,255,0.12);border-radius:999px;overflow:hidden;">
+              <div style="height:100%;width:90%;background:linear-gradient(90deg,var(--accent),var(--accent-strong));border-radius:999px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="color:var(--text);">Full-Stack Development</span>
+              <span style="color:var(--accent);">85%</span>
+            </div>
+            <div style="height:8px;background:rgba(109,216,255,0.12);border-radius:999px;overflow:hidden;">
+              <div style="height:100%;width:85%;background:linear-gradient(90deg,var(--accent),var(--accent-strong));border-radius:999px;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="color:var(--text);">Leadership & Strategy</span>
+              <span style="color:var(--accent);">75%</span>
+            </div>
+            <div style="height:8px;background:rgba(109,216,255,0.12);border-radius:999px;overflow:hidden;">
+              <div style="height:100%;width:75%;background:linear-gradient(90deg,var(--accent),var(--accent-strong));border-radius:999px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="social-proof" class="card section-card">
+        <h2 style="margin:0 0 24px;">✨ Recognition & Impact</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">⭐</div>
+            <div style="font-weight:600;color:var(--text);">12K+ Followers</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Across platforms</div>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">🏆</div>
+            <div style="font-weight:600;color:var(--text);">5 Major Awards</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Industry recognition</div>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">📣</div>
+            <div style="font-weight:600;color:var(--text);">8 Talks Given</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Conferences & events</div>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:rgba(109,216,255,0.08);border:1px solid rgba(109,216,255,0.12);text-align:center;">
+            <div style="font-size:2rem;margin-bottom:8px;">📰</div>
+            <div style="font-weight:600;color:var(--text);">15+ Publications</div>
+            <div style="color:var(--muted);font-size:0.85rem;margin-top:4px;">Written & featured</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="card section-card gallery-section">
+        <div class="section-head">
+          <div>
+            <h2>Image gallery</h2>
+            <p>Visual storytelling through projects and milestones.</p>
+          </div>
+        </div>
+        <div id="image-gallery" class="gallery-grid"></div>
+      </section>
+
+      <section id="newsletter" class="card section-card" style="background:linear-gradient(135deg,rgba(109,216,255,0.08),rgba(56,189,248,0.04));border:2px solid rgba(109,216,255,0.2);text-align:center;">
+        <h2 style="margin:0 0 16px;font-size:1.8rem;">📬 Get Weekly Updates</h2>
+        <p style="color:var(--muted);margin:0 0 24px;max-width:600px;margin-left:auto;margin-right:auto;">Subscribe to get the latest projects, insights, and creative explorations delivered to your inbox.</p>
+        <div style="display:flex;gap:12px;max-width:500px;margin:0 auto;flex-wrap:wrap;justify-content:center;">
+          <input id="newsletter-email" type="email" placeholder="your@email.com" style="flex:1;min-width:200px;padding:14px 16px;border-radius:12px;border:1px solid rgba(109,216,255,0.2);background:rgba(255,255,255,0.05);color:var(--text);"/>
+          <button id="newsletter-btn" class="btn btn-primary">Subscribe</button>
+        </div>
+        <div id="newsletter-status" style="margin-top:12px;font-size:0.9rem;color:var(--muted);"></div>
+      </section>
+
+      <section id="roadmap" class="card section-card">
+        <h2 style="margin:0 0 24px;">🗺️ What's Coming Next</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div style="padding:20px;border-radius:12px;background:rgba(109,216,255,0.06);border-left:4px solid var(--accent);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🤖 AI Integration</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Machine learning features for smarter recommendations</p>
+            <span style="display:inline-block;padding:4px 12px;background:rgba(109,216,255,0.12);border-radius:999px;color:var(--accent);font-size:0.8rem;margin-top:8px;">Q3 2024</span>
+          </div>
+          <div style="padding:20px;border-radius:12px;background:rgba(109,216,255,0.06);border-left:4px solid var(--accent);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">📱 Mobile App</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Native iOS and Android applications launching soon</p>
+            <span style="display:inline-block;padding:4px 12px;background:rgba(109,216,255,0.12);border-radius:999px;color:var(--accent);font-size:0.8rem;margin-top:8px;">Q4 2024</span>
+          </div>
+          <div style="padding:20px;border-radius:12px;background:rgba(109,216,255,0.06);border-left:4px solid var(--accent);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🌍 Global Expansion</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Multi-language support and regional features</p>
+            <span style="display:inline-block;padding:4px 12px;background:rgba(109,216,255,0.12);border-radius:999px;color:var(--accent);font-size:0.8rem;margin-top:8px;">2025</span>
+          </div>
+          <div style="padding:20px;border-radius:12px;background:rgba(109,216,255,0.06);border-left:4px solid var(--accent);">
+            <div style="font-weight:600;color:var(--text);margin-bottom:8px;">🎯 Community Hub</div>
+            <p style="color:var(--muted);font-size:0.9rem;margin:0;">Collaborative spaces for creative professionals</p>
+            <span style="display:inline-block;padding:4px 12px;background:rgba(109,216,255,0.12);border-radius:999px;color:var(--accent);font-size:0.8rem;margin-top:8px;">2025</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="card section-card" style="background:linear-gradient(135deg,rgba(109,216,255,0.1),rgba(56,189,248,0.06));border:2px solid rgba(109,216,255,0.15);text-align:center;padding:60px 40px;">
+        <h2 style="margin:0 0 16px;font-size:2.2rem;">Ready to create something amazing?</h2>
+        <p style="color:var(--muted);margin:0 0 32px;font-size:1.05rem;max-width:700px;margin-left:auto;margin-right:auto;">Let's collaborate and build experiences that matter. Whether you have an idea, need a creative partner, or just want to chat about tech and design.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="/contact.html" class="btn btn-primary" style="padding:16px 32px;font-size:1rem;">Start a conversation →</a>
+          <a href="/work.html" class="btn btn-secondary" style="padding:16px 32px;font-size:1rem;">Explore projects</a>
+        </div>
+      </section>
+
+
+      <section id="contact" class="card section-card contact-section">
+        <div>
+          <h2>Let's connect</h2>
+          <p>Open to collaborations, mentorship, or just interesting conversations.</p>
+          <div id="contact-info" class="contact-grid"></div>
+        </div>
+        <form id="contact-form" class="contact-form" action="mailto:hello@sidharth.dev" method="get" enctype="text/plain">
+          <label>
+            Your email
+            <input name="email" type="email" placeholder="you@example.com" />
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="5" placeholder="Tell me about your idea or collaboration..."></textarea>
+          </label>
+          <div id="contact-status" class="contact-status"></div>
+          <button class="btn btn-primary" type="submit">Email me</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container"><span id="footer-note">Loading footer note…</span></div>
+    </footer>
+  </div>
+  <script src="/app.js"></script>
+  <div id="project-modal" class="project-modal" aria-hidden="true">
+    <div class="project-modal-inner">
+      <button id="project-modal-close" class="btn btn-icon">✕</button>
+      <div id="project-modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    // Theme menu toggle
+    document.getElementById('theme-toggle').addEventListener('click', (e) => {
+      const dropdown = document.getElementById('theme-dropdown');
+      dropdown.style.display = dropdown.style.display === 'none' ? 'flex' : 'none';
+      e.stopPropagation();
+    });
+    document.addEventListener('click', () => {
+      document.getElementById('theme-dropdown').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
         <div class="section-head">
           <div>
             <h2>⚡ Fun fact moment</h2>
@@ -174,5 +551,11 @@
     </footer>
   </div>
   <script src="/app.js"></script>
+  <div id="project-modal" class="project-modal" aria-hidden="true">
+    <div class="project-modal-inner">
+      <button id="project-modal-close" class="btn btn-icon">✕</button>
+      <div id="project-modal-content"></div>
+    </div>
+  </div>
 </body>
 </html>

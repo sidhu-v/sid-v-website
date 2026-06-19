@@ -5,40 +5,129 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Work — Sidharth</title>
   <link rel="stylesheet" href="/styles.css">
-  <style>/* small override for carousel */
-  .carousel{position:relative;overflow:hidden;border-radius:18px}
-  .carousel-track{display:flex;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
-  .carousel-slide{min-width:100%;box-sizing:border-box}
-  .carousel-controls{display:flex;gap:8px;justify-content:center;margin-top:12px}
-  </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="logo">Sidharth V.</div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/achievements.html">Achievements</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
-  <main class="container">
-    <section class="card">
-      <h2>Project carousel</h2>
-      <div class="carousel" id="project-carousel">
-        <div class="carousel-track" id="carousel-track"></div>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="/" class="logo" style="text-decoration:none;color:inherit;">Sidharth V.</a>
+        <div class="top-controls">
+          <button id="theme-toggle" class="btn btn-icon">🌙</button>
+          <button id="audio-toggle" class="btn btn-icon" title="Audio-reactive visuals">🔊</button>
+          <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/work.html" style="color:var(--accent);">Work</a>
+            <a href="/achievements.html">Achievements</a>
+            <a href="/#contact">Contact</a>
+          </nav>
+        </div>
       </div>
-      <div class="carousel-controls" id="carousel-controls"></div>
-    </section>
+    </header>
 
-    <section class="card">
-      <h2>All projects</h2>
-      <div id="project-grid" class="project-grid"></div>
-    </section>
-  </main>
-  <footer class="site-footer"><div class="container">Back to <a href="/">home</a></div></footer>
+    <div id="particle-field" class="particle-field"></div>
+    <main class="container">
+      <section class="card" style="margin-bottom:32px;">
+        <span class="eyebrow">Featured Projects</span>
+        <h1 style="margin:16px 0 8px;font-size:clamp(2rem, 4vw, 3rem);">Work I'm proud of</h1>
+        <p style="color:var(--muted);font-size:1.05rem;">A collection of products, platforms, and experiences that solve real problems.</p>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>All Projects</h2>
+            <p>Sorted by impact and complexity.</p>
+          </div>
+        </div>
+        <div class="filter-row" style="margin-bottom:24px;">
+          <div class="search-wrapper">
+            <input id="project-search" type="text" placeholder="Search projects..." />
+          </div>
+          <div id="project-filters"></div>
+        </div>
+        <div id="project-grid" class="project-grid"></div>
+      </section>
+
+      <section class="card section-card">
+        <div class="section-head">
+          <div>
+            <h2>Auto-playing carousel</h2>
+            <p>Recent highlights—hover to pause.</p>
+          </div>
+        </div>
+        <div class="carousel-shell">
+          <div class="carousel-view"><div id="carousel-track" class="carousel-track"></div></div>
+          <div id="carousel-controls" class="carousel-controls"></div>
+          <div class="carousel-status" id="carousel-status">1 / 3</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container"><span id="footer-note">Loading footer note…</span></div>
+    </footer>
+  </div>
+  
+  <div id="project-modal" class="project-modal" aria-hidden="true">
+    <div class="project-modal-inner">
+      <button id="project-modal-close" class="btn btn-icon">✕</button>
+      <div id="project-modal-content"></div>
+    </div>
+  </div>
+
   <script src="/app.js"></script>
+  <script>
+    async function loadWorkPage(){
+      const res = await fetch('/api/data');
+      const data = await res.json();
+      
+      // Render projects
+      renderProjects(data.projects);
+      renderProjectFilters(['All', ...new Set(data.projects.map(p => p.category))]);
+      initProjectFilter(data);
+      
+      // Carousel
+      initCarousel(data.projects);
+      
+      // Setup theme and particles
+      setupThemeToggle();
+      initParticleField();
+      enhanceReveal();
+      
+      // Footer
+      document.getElementById('footer-note').textContent = data.footer;
+      
+      // Modal close
+      document.addEventListener('click', (ev)=>{
+        const modal = document.getElementById('project-modal');
+        if(!modal) return;
+        if(ev.target.id === 'project-modal' || ev.target.id === 'project-modal-close'){
+          modal.setAttribute('aria-hidden','true'); 
+          modal.classList.remove('open');
+        }
+      });
+      
+      // Search functionality
+      const search = document.getElementById('project-search');
+      if(search) {
+        search.addEventListener('input', () => {
+          const q = search.value.toLowerCase().trim();
+          if (!q) {
+            renderProjects(data.projects);
+            return;
+          }
+          const filtered = data.projects.filter(project => {
+            return Object.values(project).some(value =>
+              typeof value === 'string' && value.toLowerCase().includes(q)
+            );
+          });
+          renderProjects(filtered);
+        });
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadWorkPage);
+  </script>
 </body>
 </html>
